@@ -38,11 +38,26 @@ Options:
         timeout for HTTP requests (default 10s)
 
 $ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy gronk
-kristy 2021/03/03 12:11:20 starting
-kristy 2021/03/03 12:11:20 done
+kristy 2021/03/03 12:33:45 starting
+kristy 2021/03/03 12:33:46 done
 Error: 4 errors:
-        error 1: bad response from HealthCheck.io: unexpected status: 404 Not Found
-        error 2: bad response from HealthCheck.io: unexpected status: 404 Not Found
+        error 1: problem sending start signal: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
+        error 2: problem sending status: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
         error 3: Post "https://none.example/": dial tcp: lookup none.example: no such host
         error 4: could not start process: exec: "gronk": executable file not found in $PATH
+
+$ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy ls
+kristy 2021/03/03 12:34:03 starting
+LICENSE
+README.md
+go.mod
+go.sum
+healthcheckio
+main.go
+sitter
+kristy 2021/03/03 12:34:04 done
+Error: 3 errors:
+        error 1: problem sending start signal: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
+        error 2: problem sending status: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
+        error 3: Post "https://none.example/": dial tcp: lookup none.example: no such host
 ```

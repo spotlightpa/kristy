@@ -16,3 +16,10 @@ func (se StatusErr) Error() string {
 	return fmt.Sprintf("unexpected status: %d %s",
 		int(se), se.String())
 }
+
+func maybeNote(err error, msg string) error {
+	if err == nil {
+		return nil
+	}
+	return fmt.Errorf(msg+": %w", err)
+}

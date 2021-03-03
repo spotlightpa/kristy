@@ -24,22 +24,24 @@ func New(uuid string, c *http.Client) *Client {
 }
 
 func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) {
+	defer func() {
+		err = maybeNote(err, "problem connecting to HealthCheck.io")
+	}()
 	var r io.Reader
 	if len(body) > 0 {
 		r = bytes.NewReader(body)
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, r)
 	if err != nil {
-		return fmt.Errorf("problem building HealthCheck.io request: %w", err)
+		return err
 	}
 	res, err := cl.c.Do(req)
 	if err != nil {
-		return fmt.Errorf("problem connecting to HealthCheck.io: %w", err)
+		return err
 	}
 	defer res.Body.Close()
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
-		return fmt.Errorf("bad response from HealthCheck.io: %w",
-			StatusErr(res.StatusCode))
+		return StatusErr(res.StatusCode)
 	}
 	// HealthCheck.io shouldn't be giving us anything to discard,
 	// but if they do, read some of it to try to reuse connections
@@ -53,11 +55,11 @@ func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) 
 // Start calls the start HealthCheck.io endpoint
 func (cl *Client) Start(ctx context.Context) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/start", cl.uuid)
-	return cl.req(ctx, url, nil)
+	return maybeNote(cl.req(ctx, url, nil), "problem sending start signal")
 }
 
 // Status calls the HealthCheck.io status endpoint
 func (cl *Client) Status(ctx context.Context, code int, msg []byte) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/%d", cl.uuid, code)
-	return cl.req(ctx, url, msg)
+	return maybeNote(cl.req(ctx, url, msg), "problem sending status")
 }
