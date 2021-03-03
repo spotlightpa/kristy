@@ -19,6 +19,7 @@ import (
 	"github.com/carlmjohnson/flagext"
 	"github.com/carlmjohnson/slackhook"
 	"github.com/spotlightpa/kristy/healthcheckio"
+	"github.com/spotlightpa/kristy/httptools"
 )
 
 const appName = "kristy"
@@ -79,6 +80,9 @@ Options:
 		return err
 	}
 	app.cmd = fl.Args()
+	httptools.WrapTransport(&app.cl, func(r *http.Request) {
+		r.Header.Set("User-Agent", "kristy/dev")
+	})
 	return nil
 }
 
