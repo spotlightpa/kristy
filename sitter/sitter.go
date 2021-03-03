@@ -1,3 +1,4 @@
+// Package sitter contains exports the CLI app for Kristy
 package sitter
 
 import (
@@ -22,7 +23,7 @@ import (
 
 const appName = "kristy"
 
-// CLI for the kristy application
+// CLI for the Kristy cron job baby-sitter
 func CLI(args []string) error {
 	var app appEnv
 	err := app.ParseArgs(args)
@@ -33,7 +34,7 @@ func CLI(args []string) error {
 	defer cancel()
 
 	if err = app.Exec(ctx); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %+v\n", err)
 	}
 	return err
 }
@@ -55,6 +56,8 @@ HealthCheck.io, it falls back to warning Slack that something went wrong.
 Usage:
 
 	kristy [options] <command to babysit>
+
+Options may be also passed as environmental variables prefixed with KRISTY_.
 
 Options:
 `)
@@ -112,7 +115,7 @@ func (app *appEnv) Exec(ctx context.Context) (err error) {
 	errStart := make(chan error, 1)
 	go func() { errStart <- app.hc.Start(ctx) }()
 	// Run the command
-	stdout, stderr, cmderr := app.work(ctx)
+	stdout, stderr, cmderr := app.runCmd(ctx)
 	// Tell HC how that went
 	code := exitcode.Get(cmderr)
 	msg := makeMessage(stdout, stderr, maxHCBuff)
@@ -151,7 +154,7 @@ func makeMessage(stdout, stderr []byte, limit int) []byte {
 	return []byte(fmt.Sprintf("-- stdout --\n%s\n-- stderr --\n%s\n", stdout, stderr))
 }
 
-func (app *appEnv) work(ctx context.Context) (stdout, stderr []byte, err error) {
+func (app *appEnv) runCmd(ctx context.Context) (stdout, stderr []byte, err error) {
 	// Errors to Sentry then Slack
 	cmd := exec.CommandContext(ctx, app.cmd[0], app.cmd[1:]...)
 	bufO, _ := circbuf.NewBuffer(maxBuf)
