@@ -30,15 +30,16 @@ func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) 
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, r)
 	if err != nil {
-		return err
+		return fmt.Errorf("problem building HealthCheck.io request: %w", err)
 	}
 	res, err := cl.c.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("problem connecting to HealthCheck.io: %w", err)
 	}
 	defer res.Body.Close()
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
-		return StatusErr(res.StatusCode)
+		return fmt.Errorf("bad response from HealthCheck.io: %w",
+			StatusErr(res.StatusCode))
 	}
 	// HealthCheck.io shouldn't be giving us anything to discard,
 	// but if they do, read some of it to try to reuse connections
