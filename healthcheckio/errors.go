@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// StatusErr is an unexpected status
+// StatusErr represents an unexpected response status from HealthCheck.io
 type StatusErr int
 
 func (se StatusErr) String() string {

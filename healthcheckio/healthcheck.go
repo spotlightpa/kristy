@@ -15,7 +15,7 @@ type Client struct {
 	uuid string
 }
 
-// New returns a configured client
+// New returns a configured client. If c is nil, http.DefaultClient is used.
 func New(uuid string, c *http.Client) *Client {
 	if c == nil {
 		c = http.DefaultClient
@@ -55,7 +55,7 @@ func (cl *Client) Start(ctx context.Context) error {
 	return cl.req(ctx, url, nil)
 }
 
-// Status calls HealthCheck.io status endpoint
+// Status calls the HealthCheck.io status endpoint
 func (cl *Client) Status(ctx context.Context, code int, msg []byte) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/%d", cl.uuid, code)
 	return cl.req(ctx, url, msg)
