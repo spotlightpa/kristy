@@ -112,7 +112,7 @@ const (
 	maxSlackBuff = 40 * kb
 )
 
-func (app *appEnv) Exec(ctx context.Context) (err error) {
+func (app *appEnv) Exec(ctx context.Context) error {
 	app.Println("starting")
 	defer app.Println("done")
 	// Tell HC we started
@@ -123,10 +123,11 @@ func (app *appEnv) Exec(ctx context.Context) (err error) {
 	// Tell HC how that went
 	code := exitcode.Get(cmderr)
 	msg := makeMessage(stdout, stderr, maxHCBuff)
-	statusErr := app.hc.Status(ctx, code, msg)
+	hcErr := app.hc.Status(ctx, code, msg)
 	// If the HC commands didn't work, fallback to Slack
-	if err = errutil.Merge(<-errStart, statusErr); err != nil {
-		slackerr := app.sc.PostCtx(ctx, slackhook.Message{
+	var slackErr error
+	if cmderr != nil && hcErr != nil {
+		slackErr = app.sc.PostCtx(ctx, slackhook.Message{
 			Text: "Could not report job to Healthcheck.io",
 			Attachments: []slackhook.Attachment{
 				{
@@ -137,10 +138,9 @@ func (app *appEnv) Exec(ctx context.Context) (err error) {
 							Title: "Job output",
 							Value: string(makeMessage(stdout, stderr, maxSlackBuff)),
 						}}}}})
-		err = errutil.Merge(err, slackerr)
 	}
 	// Report if anything failed
-	return errutil.Merge(err, cmderr)
+	return errutil.Merge(cmderr, <-errStart, hcErr, slackErr)
 }
 
 func makeMessage(stdout, stderr []byte, limit int) []byte {
