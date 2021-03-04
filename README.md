@@ -41,10 +41,10 @@ $ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy gronk
 kristy 2021/03/03 19:57:22 starting
 kristy 2021/03/03 19:57:23 done
 Error: 4 errors:
-        error 1: could not start process: exec: "gronk": executable file not found in $PATH
-        error 2: problem sending start signal: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
-        error 3: problem sending status: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
-        error 4: Post "https://none.example/": dial tcp: lookup none.example: no such host
+      error 1: could not start process: exec: "gronk": executable file not found in $PATH
+        error 2: problem sending start signal to Healthcheck.io: unexpected status: 404 Not Found
+        error 3: problem sending status to Healthcheck.io: unexpected status: 404 Not Found
+        error 4: problem sending message to Slack: Post "https://none.example/": dial tcp: lookup none.example: no such host
 
 $ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy ls
 kristy 2021/03/03 12:34:03 starting
@@ -56,8 +56,7 @@ healthcheckio
 main.go
 sitter
 kristy 2021/03/03 12:34:04 done
-Error: 3 errors:
-        error 1: problem sending start signal: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
-        error 2: problem sending status: problem connecting to HealthCheck.io: unexpected status: 404 Not Found
-        error 3: Post "https://none.example/": dial tcp: lookup none.example: no such host
+Error: 2 errors:
+        error 1: problem sending start signal to Healthcheck.io: unexpected status: 404 Not Found
+        error 2: problem sending status to Healthcheck.io: unexpected status: 404 Not Found
 ```

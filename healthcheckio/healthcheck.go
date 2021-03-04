@@ -24,9 +24,6 @@ func New(uuid string, c *http.Client) *Client {
 }
 
 func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) {
-	defer func() {
-		err = maybeNote(err, "problem connecting to HealthCheck.io")
-	}()
 	var r io.Reader
 	if len(body) > 0 {
 		r = bytes.NewReader(body)
@@ -55,11 +52,11 @@ func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) 
 // Start calls the start HealthCheck.io endpoint
 func (cl *Client) Start(ctx context.Context) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/start", cl.uuid)
-	return maybeNote(cl.req(ctx, url, nil), "problem sending start signal")
+	return maybeNote(cl.req(ctx, url, nil), "problem sending start signal to Healthcheck.io")
 }
 
 // Status calls the HealthCheck.io status endpoint
 func (cl *Client) Status(ctx context.Context, code int, msg []byte) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/%d", cl.uuid, code)
-	return maybeNote(cl.req(ctx, url, msg), "problem sending status")
+	return maybeNote(cl.req(ctx, url, msg), "problem sending status to Healthcheck.io")
 }
