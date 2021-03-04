@@ -1,11 +1,11 @@
-package healthcheckio
+package healthchecksio
 
 import (
 	"fmt"
 	"net/http"
 )
 
-// StatusErr represents an unexpected response status from HealthCheck.io
+// StatusErr represents an unexpected response status from HealthChecks.io
 type StatusErr int
 
 func (se StatusErr) String() string {

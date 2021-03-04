@@ -1,5 +1,5 @@
-// Package healthcheckio is a wrapper for API calls to HealthCheck.io
-package healthcheckio
+// Package healthchecksio is a wrapper for API calls to HealthChecks.io
+package healthchecksio
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-// Client is a convenient way to ping HealthCheck.io
+// Client is a convenient way to ping HealthChecks.io
 type Client struct {
 	c    *http.Client
 	uuid string
@@ -40,7 +40,7 @@ func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) 
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
 		return StatusErr(res.StatusCode)
 	}
-	// HealthCheck.io shouldn't be giving us anything to discard,
+	// HealthChecks.io shouldn't be giving us anything to discard,
 	// but if they do, read some of it to try to reuse connections
 	const maxDiscardSize = 640 * 1 << 10
 	if _, err = io.CopyN(io.Discard, res.Body, maxDiscardSize); err == io.EOF {
@@ -49,14 +49,14 @@ func (cl *Client) req(ctx context.Context, url string, body []byte) (err error) 
 	return err
 }
 
-// Start calls the start HealthCheck.io endpoint
+// Start calls the start HealthChecks.io endpoint
 func (cl *Client) Start(ctx context.Context) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/start", cl.uuid)
-	return maybeNote(cl.req(ctx, url, nil), "problem sending start signal to Healthcheck.io")
+	return maybeNote(cl.req(ctx, url, nil), "problem sending start signal to Healthchecks.io")
 }
 
-// Status calls the HealthCheck.io status endpoint
+// Status calls the HealthChecks.io status endpoint
 func (cl *Client) Status(ctx context.Context, code int, msg []byte) error {
 	url := fmt.Sprintf("https://hc-ping.com/%s/%d", cl.uuid, code)
-	return maybeNote(cl.req(ctx, url, msg), "problem sending status to Healthcheck.io")
+	return maybeNote(cl.req(ctx, url, msg), "problem sending status to Healthchecks.io")
 }

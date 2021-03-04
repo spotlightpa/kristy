@@ -1,6 +1,6 @@
 # kristy [![GoDoc](https://godoc.org/github.com/spotlightpa/kristy?status.svg)](https://godoc.org/github.com/spotlightpa/kristy) [![Go Report Card](https://goreportcard.com/badge/github.com/spotlightpa/kristy)](https://goreportcard.com/report/github.com/spotlightpa/kristy)
 
-Kristy is a baby-sitter for your processes. It reports errors to [HealthCheck.io](https://HealthCheck.io) and Slack as needed to ensure no cron job falls through the cracks.
+Kristy is a baby-sitter for your processes. It reports errors to [HealthChecks.io](https://HealthChecks.io) and Slack as needed to ensure no cron job falls through the cracks.
 
 ## Installation
 
@@ -18,8 +18,8 @@ GOBIN=$(pwd) go install github.com/spotlightpa/kristy@latest
 $ kristy -h
 kristy - a baby-sitter for your cron jobs
 
-Kristy tells HealthCheck.io how your cronjobs are doing. If it can't reach
-HealthCheck.io, it falls back to warning Slack that something went wrong.
+Kristy tells HealthChecks.io how your cronjobs are doing. If it can't reach
+HealthChecks.io, it falls back to warning Slack that something went wrong.
 
 Usage:
 
@@ -29,7 +29,7 @@ Options may be also passed as environmental variables prefixed with KRISTY_.
 
 Options:
   -healthcheck UUID
-        UUID for HealthCheck.io job
+        UUID for HealthChecks.io job
   -silent
         don't log debug output
   -slack URL
@@ -42,8 +42,8 @@ kristy 2021/03/03 19:57:22 starting
 kristy 2021/03/03 19:57:23 done
 Error: 4 errors:
       error 1: could not start process: exec: "gronk": executable file not found in $PATH
-        error 2: problem sending start signal to Healthcheck.io: unexpected status: 404 Not Found
-        error 3: problem sending status to Healthcheck.io: unexpected status: 404 Not Found
+        error 2: problem sending start signal to Healthchecks.io: unexpected status: 404 Not Found
+        error 3: problem sending status to Healthchecks.io: unexpected status: 404 Not Found
         error 4: problem sending message to Slack: Post "https://none.example/": dial tcp: lookup none.example: no such host
 
 $ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy ls
@@ -52,11 +52,11 @@ LICENSE
 README.md
 go.mod
 go.sum
-healthcheckio
+healthchecksio
 main.go
 sitter
 kristy 2021/03/03 12:34:04 done
 Error: 2 errors:
-        error 1: problem sending start signal to Healthcheck.io: unexpected status: 404 Not Found
-        error 2: problem sending status to Healthcheck.io: unexpected status: 404 Not Found
+        error 1: problem sending start signal to Healthchecks.io: unexpected status: 404 Not Found
+        error 2: problem sending status to Healthchecks.io: unexpected status: 404 Not Found
 ```

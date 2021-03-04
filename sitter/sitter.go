@@ -18,7 +18,7 @@ import (
 	"github.com/carlmjohnson/exitcode"
 	"github.com/carlmjohnson/flagext"
 	"github.com/carlmjohnson/slackhook"
-	"github.com/spotlightpa/kristy/healthcheckio"
+	"github.com/spotlightpa/kristy/healthchecksio"
 	"github.com/spotlightpa/kristy/httptools"
 )
 
@@ -47,12 +47,12 @@ func (app *appEnv) ParseArgs(args []string) error {
 		fl, app.Logger, "silent", flagext.LogSilent, "don't log debug output")
 	fl.DurationVar(&app.cl.Timeout, "timeout", 10*time.Second, "timeout for HTTP requests")
 	fl.Func("slack", "Slack hook `URL`", app.setSlackHook)
-	fl.Func("healthcheck", "`UUID` for HealthCheck.io job", app.setHC)
+	fl.Func("healthcheck", "`UUID` for HealthChecks.io job", app.setHC)
 	fl.Usage = func() {
 		fmt.Fprintf(fl.Output(), `kristy - a baby-sitter for your cron jobs
 
-Kristy tells HealthCheck.io how your cronjobs are doing. If it can't reach
-HealthCheck.io, it falls back to warning Slack that something went wrong.
+Kristy tells HealthChecks.io how your cronjobs are doing. If it can't reach
+HealthChecks.io, it falls back to warning Slack that something went wrong.
 
 Usage:
 
@@ -90,7 +90,7 @@ type appEnv struct {
 	cmd []string
 	cl  http.Client
 	sc  *slackhook.Client
-	hc  *healthcheckio.Client
+	hc  *healthchecksio.Client
 	*log.Logger
 }
 
@@ -100,7 +100,7 @@ func (app *appEnv) setSlackHook(s string) error {
 }
 
 func (app *appEnv) setHC(s string) error {
-	app.hc = healthcheckio.New(s, &app.cl)
+	app.hc = healthchecksio.New(s, &app.cl)
 	return nil
 }
 
@@ -128,7 +128,7 @@ func (app *appEnv) Exec(ctx context.Context) error {
 	var slackErr error
 	if cmderr != nil && hcErr != nil {
 		slackErr = app.sc.PostCtx(ctx, slackhook.Message{
-			Text: "Could not report job to Healthcheck.io",
+			Text: "Could not report job to Healthchecks.io",
 			Attachments: []slackhook.Attachment{
 				{
 					Title: fmt.Sprintf("problem running cron job %s", app.cmd[0]),
