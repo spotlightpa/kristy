@@ -6,8 +6,8 @@ github.com/carlmjohnson/exitcode v0.20.2 h1:vE6rmkCGNA4kO4m1qwWIa77PKlUBVg46cNjs
 github.com/carlmjohnson/exitcode v0.20.2/go.mod h1:MZ6ThCDx517DQcrpYnnns1pLh8onjFl+B/AsrOrdmpc=
 github.com/carlmjohnson/flagext v0.21.0 h1:/c4uK3ie786Z7caXLcIMvePNSSiH3bQVGDvmGLMme60=
 github.com/carlmjohnson/flagext v0.21.0/go.mod h1:Eenv0epIUAr4NuedNmkzI8WmBmjIxZC239XcKxYS2ac=
-github.com/carlmjohnson/slackhook v0.20.2 h1:zdh4FFVeP66Qgnwgn2+hNuNCicwG+1bUoXWCJYbOKsw=
-github.com/carlmjohnson/slackhook v0.20.2/go.mod h1:McpDznUHKwklLPEMqj2QuR8pHPXs1rbKk7OyBCNJqiY=
+github.com/carlmjohnson/slackhook v0.21.1 h1:6vm4ES1C0oUKcIpzL0PodyuSPaZrOeUlh8dIdJoAO/c=
+github.com/carlmjohnson/slackhook v0.21.1/go.mod h1:McpDznUHKwklLPEMqj2QuR8pHPXs1rbKk7OyBCNJqiY=
 github.com/matryer/is v1.4.0 h1:sosSmIWwkYITGrxZ25ULNDeKiMNzFSr4V/eqBQP0PeE=
 github.com/matryer/is v1.4.0/go.mod h1:8I/i5uYgLzgsgEloJE1U6xx5HkBQpAZvepWuujKwMRU=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
