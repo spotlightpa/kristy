@@ -30,6 +30,8 @@ Options may be also passed as environmental variables prefixed with KRISTY_.
 Options:
   -healthcheck UUID
         UUID for HealthChecks.io job
+  -retries int
+        how many times to retry failed commands
   -silent
         don't log debug output
   -slack URL
@@ -59,4 +61,19 @@ kristy 2021/03/03 12:34:04 done
 Error: 2 errors:
         error 1: problem sending start signal to Healthchecks.io: unexpected status: 404 Not Found
         error 2: problem sending status to Healthchecks.io: unexpected status: 404 Not Found
+
+$ KRISTY_HEALTHCHECK='x' KRISTY_SLACK='https://none.example/' kristy -retries 3 gronk
+kristy 2021/03/16 15:26:03 starting
+kristy 2021/03/16 15:26:03 command returned 1; waiting 1s for retry
+kristy 2021/03/16 15:26:04 retrying command; 3 retries remaining
+kristy 2021/03/16 15:26:04 command returned 1; waiting 3s for retry
+kristy 2021/03/16 15:26:07 retrying command; 2 retries remaining
+kristy 2021/03/16 15:26:07 command returned 1; waiting 9s for retry
+kristy 2021/03/16 15:26:16 retrying command; 1 retries remaining
+kristy 2021/03/16 15:26:16 done
+Error: 4 errors:
+        error 1: could not start process: exec: "gronk": executable file not found in $PATH
+        error 2: problem sending start signal to Healthchecks.io: unexpected status: 404 Not Found
+        error 3: problem sending status to Healthchecks.io: unexpected status: 404 Not Found
+        error 4: problem sending message to Slack: Post "https://none.example/": dial tcp: lookup none.example: no such host
 ```

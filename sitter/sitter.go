@@ -46,6 +46,7 @@ func (app *appEnv) ParseArgs(args []string) error {
 	flagext.LoggerVar(
 		fl, app.Logger, "silent", flagext.LogSilent, "don't log debug output")
 	fl.DurationVar(&app.cl.Timeout, "timeout", 10*time.Second, "timeout for HTTP requests")
+	fl.IntVar(&app.retries, "retries", 0, "how many times to retry failed commands")
 	fl.Func("slack", "Slack hook `URL`", app.setSlackHook)
 	fl.Func("healthcheck", "`UUID` for HealthChecks.io job", app.setHC)
 	fl.Usage = func() {
@@ -92,6 +93,7 @@ type appEnv struct {
 	sc  *slackhook.Client
 	hc  *healthchecksio.Client
 	*log.Logger
+	retries int
 }
 
 func (app *appEnv) setSlackHook(s string) error {
@@ -120,6 +122,16 @@ func (app *appEnv) Exec(ctx context.Context) error {
 	go func() { errStart <- app.hc.Start(ctx) }()
 	// Run the command
 	stdout, stderr, cmderr := app.runCmd(ctx)
+	delay := 1 * time.Second
+	for cmderr != nil && app.retries > 0 {
+		app.Printf("command returned %d; waiting %v for retry",
+			exitcode.Get(cmderr), delay)
+		time.Sleep(delay)
+		app.Printf("retrying command; %d retries remaining", app.retries)
+		stdout, stderr, cmderr = app.runCmd(ctx)
+		delay *= 3
+		app.retries--
+	}
 	// Tell HC how that went
 	code := exitcode.Get(cmderr)
 	msg := makeMessage(stdout, stderr, maxHCBuff)
