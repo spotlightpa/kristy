@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime/debug"
 	"time"
 
 	"github.com/armon/circbuf"
@@ -50,7 +51,7 @@ func (app *appEnv) ParseArgs(args []string) error {
 	fl.Func("slack", "Slack hook `URL`", app.setSlackHook)
 	fl.Func("healthcheck", "`UUID` for HealthChecks.io job", app.setHC)
 	fl.Usage = func() {
-		fmt.Fprintf(fl.Output(), `kristy - a baby-sitter for your cron jobs
+		fmt.Fprintf(fl.Output(), `kristy %s - a baby-sitter for your cron jobs
 
 Kristy tells HealthChecks.io how your cronjobs are doing. If it can't reach
 HealthChecks.io, it falls back to warning Slack that something went wrong.
@@ -62,7 +63,7 @@ Usage:
 Options may be also passed as environmental variables prefixed with KRISTY_.
 
 Options:
-`)
+`, app.getVersion())
 		fl.PrintDefaults()
 		fmt.Fprintln(fl.Output(), "")
 	}
@@ -94,6 +95,14 @@ type appEnv struct {
 	hc  *healthchecksio.Client
 	*log.Logger
 	retries int
+}
+
+func (app *appEnv) getVersion() string {
+	i, ok := debug.ReadBuildInfo()
+	if !ok {
+		return "(unknown)"
+	}
+	return i.Main.Version
 }
 
 func (app *appEnv) setSlackHook(s string) error {

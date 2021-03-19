@@ -16,7 +16,7 @@ GOBIN=$(pwd) go install github.com/spotlightpa/kristy@latest
 
 ```
 $ kristy -h
-kristy - a baby-sitter for your cron jobs
+kristy v0.21.6 - a baby-sitter for your cron jobs
 
 Kristy tells HealthChecks.io how your cronjobs are doing. If it can't reach
 HealthChecks.io, it falls back to warning Slack that something went wrong.
