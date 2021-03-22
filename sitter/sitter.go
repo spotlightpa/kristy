@@ -83,7 +83,8 @@ Options:
 	}
 	app.cmd = fl.Args()
 	httptools.WrapTransport(&app.cl, func(r *http.Request) {
-		r.Header.Set("User-Agent", "kristy/dev")
+		userAgent := fmt.Sprintf("%s/%s", appName, app.getVersion())
+		r.Header.Set("User-Agent", userAgent)
 	})
 	return nil
 }
