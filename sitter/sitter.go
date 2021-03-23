@@ -106,7 +106,7 @@ func (app *appEnv) reportInitErr(errp *error) {
 		return
 	}
 	ctx := context.Background()
-	msg := fmt.Sprintf("could not start up: %v", err)
+	msg := fmt.Sprintf("initialization error: %v", err)
 	if app.hc != nil {
 		if err2 := app.hc.Status(ctx, 1, []byte(msg)); err2 == nil {
 			return
@@ -114,12 +114,11 @@ func (app *appEnv) reportInitErr(errp *error) {
 	}
 	if app.sc != nil {
 		app.sc.PostCtx(ctx, slackhook.Message{
-			Text: "Could not start task",
-			Attachments: []slackhook.Attachment{
-				{
-					Title: fmt.Sprintf("problem starting Kristy: %v", err),
-					Color: "#f00",
-				}}})
+			Text: "Could not start Kristy",
+			Attachments: []slackhook.Attachment{{
+				Title: msg,
+				Color: "#f00",
+			}}})
 	}
 }
 
