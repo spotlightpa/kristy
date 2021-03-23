@@ -41,7 +41,9 @@ func CLI(args []string) error {
 	return err
 }
 
-func (app *appEnv) ParseArgs(args []string) error {
+func (app *appEnv) ParseArgs(args []string) (err error) {
+	defer app.reportInitErr(&err)
+
 	fl := flag.NewFlagSet(appName, flag.ContinueOnError)
 	app.Logger = log.New(nil, appName+" ", log.LstdFlags)
 	flagext.LoggerVar(
@@ -67,18 +69,18 @@ Options:
 		fl.PrintDefaults()
 		fmt.Fprintln(fl.Output(), "")
 	}
-	if err := fl.Parse(args); err != nil {
+	if err = fl.Parse(args); err != nil {
 		return err
 	}
-	if err := flagext.ParseEnv(fl, appName); err != nil {
+	if err = flagext.ParseEnv(fl, appName); err != nil {
 		return err
 	}
-	if err := flagext.MustHave(fl,
+	if err = flagext.MustHave(fl,
 		"healthcheck", "slack",
 	); err != nil {
 		return err
 	}
-	if err := flagext.MustHaveArgs(fl, 1, -1); err != nil {
+	if err = flagext.MustHaveArgs(fl, 1, -1); err != nil {
 		return err
 	}
 	app.cmd = fl.Args()
@@ -96,6 +98,29 @@ type appEnv struct {
 	hc  *healthchecksio.Client
 	*log.Logger
 	retries int
+}
+
+func (app *appEnv) reportInitErr(errp *error) {
+	err := *errp
+	if err == nil {
+		return
+	}
+	ctx := context.Background()
+	msg := fmt.Sprintf("could not start up: %v", err)
+	if app.hc != nil {
+		if err2 := app.hc.Status(ctx, 1, []byte(msg)); err2 == nil {
+			return
+		}
+	}
+	if app.sc != nil {
+		app.sc.PostCtx(ctx, slackhook.Message{
+			Text: "Could not start task",
+			Attachments: []slackhook.Attachment{
+				{
+					Title: fmt.Sprintf("problem starting Kristy: %v", err),
+					Color: "#f00",
+				}}})
+	}
 }
 
 func (app *appEnv) getVersion() string {
