@@ -144,8 +144,10 @@ const (
 	kb = 1 << 10
 	// Ought to be enough for anyone
 	maxBuf       = 640 * kb
-	maxHCBuff    = 10 * kb
 	maxSlackBuff = 40 * kb
+	// HC documents their buffer as 10KB
+	// but it appears to actuall be only 10k
+	maxHCBuff = 10_000
 )
 
 func (app *appEnv) Exec(ctx context.Context) error {
