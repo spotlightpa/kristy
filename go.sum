@@ -8,8 +8,8 @@ github.com/carlmjohnson/exitcode v0.20.2 h1:vE6rmkCGNA4kO4m1qwWIa77PKlUBVg46cNjs
 github.com/carlmjohnson/exitcode v0.20.2/go.mod h1:MZ6ThCDx517DQcrpYnnns1pLh8onjFl+B/AsrOrdmpc=
 github.com/carlmjohnson/flagext v0.21.0 h1:/c4uK3ie786Z7caXLcIMvePNSSiH3bQVGDvmGLMme60=
 github.com/carlmjohnson/flagext v0.21.0/go.mod h1:Eenv0epIUAr4NuedNmkzI8WmBmjIxZC239XcKxYS2ac=
-github.com/carlmjohnson/requests v0.21.5 h1:yf4lhbhwAQye61BobyMnTZAwJST0eB3wU76uJ4Lg5OE=
-github.com/carlmjohnson/requests v0.21.5/go.mod h1:/9DnSrKklCIzRi9R9hYXcaCpesh/7fVeVRU50fvaCTo=
+github.com/carlmjohnson/requests v0.21.6 h1:WDH5zcSUxBCo5Kh4oWt4RWKgzZsxZzatZyuG3OCuszk=
+github.com/carlmjohnson/requests v0.21.6/go.mod h1:/9DnSrKklCIzRi9R9hYXcaCpesh/7fVeVRU50fvaCTo=
 github.com/carlmjohnson/slackhook v0.21.1 h1:6vm4ES1C0oUKcIpzL0PodyuSPaZrOeUlh8dIdJoAO/c=
 github.com/carlmjohnson/slackhook v0.21.1/go.mod h1:McpDznUHKwklLPEMqj2QuR8pHPXs1rbKk7OyBCNJqiY=
 github.com/matryer/is v1.4.0 h1:sosSmIWwkYITGrxZ25ULNDeKiMNzFSr4V/eqBQP0PeE=
