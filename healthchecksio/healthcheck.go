@@ -5,6 +5,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/carlmjohnson/errutil"
 	"github.com/carlmjohnson/requests"
 )
 
@@ -25,19 +26,19 @@ func New(uuid string, c *http.Client) *Client {
 }
 
 // Start calls the start HealthChecks.io endpoint
-func (cl *Client) Start(ctx context.Context) error {
-	return maybeNote(
-		cl.rb.Clone().
-			Pathf("/%s/start", cl.uuid).
-			Fetch(ctx),
-		"problem sending start signal to Healthchecks.io")
+func (cl *Client) Start(ctx context.Context) (err error) {
+	defer errutil.Prefix(&err, "problem sending start signal to Healthchecks.io")
+
+	return cl.rb.Clone().
+		Pathf("/%s/start", cl.uuid).
+		Fetch(ctx)
 }
 
 // Status calls the HealthChecks.io status endpoint
-func (cl *Client) Status(ctx context.Context, code int, msg []byte) error {
-	return maybeNote(
-		cl.rb.Clone().
-			Pathf("/%s/%d", cl.uuid, code).
-			Fetch(ctx),
-		"problem sending status to Healthchecks.io")
+func (cl *Client) Status(ctx context.Context, code int, msg []byte) (err error) {
+	defer errutil.Prefix(&err, "problem sending status to Healthchecks.io")
+
+	return cl.rb.Clone().
+		Pathf("/%s/%d", cl.uuid, code).
+		Fetch(ctx)
 }
