@@ -7,7 +7,7 @@ require (
 	github.com/carlmjohnson/errutil v0.21.1
 	github.com/carlmjohnson/exitcode v0.20.2
 	github.com/carlmjohnson/flagext v0.21.0
-	github.com/carlmjohnson/requests v0.21.7
+	github.com/carlmjohnson/requests v0.21.8
 	github.com/carlmjohnson/slackhook v0.21.1
 	github.com/matryer/is v1.4.0
 )
