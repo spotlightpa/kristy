@@ -11,16 +11,15 @@ import (
 
 // Client is a convenient way to ping HealthChecks.io
 type Client struct {
-	uuid string
-	rb   *requests.Builder
+	rb *requests.Builder
 }
 
 // New returns a configured client. If c is nil, http.DefaultClient is used.
 func New(uuid string, c *http.Client) *Client {
 	return &Client{
-		uuid,
 		requests.
 			URL("https://hc-ping.com").
+			Path(uuid).
 			Client(c),
 	}
 }
@@ -30,7 +29,7 @@ func (cl *Client) Start(ctx context.Context) (err error) {
 	defer errutil.Prefix(&err, "problem sending start signal to Healthchecks.io")
 
 	return cl.rb.Clone().
-		Pathf("/%s/start", cl.uuid).
+		Path("start").
 		Fetch(ctx)
 }
 
@@ -39,6 +38,6 @@ func (cl *Client) Status(ctx context.Context, code int, msg []byte) (err error) 
 	defer errutil.Prefix(&err, "problem sending status to Healthchecks.io")
 
 	return cl.rb.Clone().
-		Pathf("/%s/%d", cl.uuid, code).
+		Pathf("%d", code).
 		Fetch(ctx)
 }
