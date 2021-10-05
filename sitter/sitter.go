@@ -84,10 +84,8 @@ Options:
 		return err
 	}
 	app.cmd = fl.Args()
-	requests.WrapTransport(&app.cl, func(r *http.Request) {
-		userAgent := fmt.Sprintf("%s/%s", appName, app.getVersion())
-		r.Header.Set("User-Agent", userAgent)
-	})
+	userAgent := fmt.Sprintf("%s/%s", appName, app.getVersion())
+	app.cl.Transport = requests.UserAgentTransport(nil, userAgent)
 	return nil
 }
 
