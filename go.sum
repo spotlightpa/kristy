@@ -1,13 +1,11 @@
 github.com/armon/circbuf v0.0.0-20190214190532-5111143e8da2 h1:7Ip0wMmLHLRJdrloDxZfhMm0xrLXZS8+COSu2bXmEQs=
 github.com/armon/circbuf v0.0.0-20190214190532-5111143e8da2/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
-github.com/carlmjohnson/errutil v0.21.1 h1:AzPzbVIZBWipr2bJJ3hDo8PEQ9NBaDnro+0uyjRswak=
-github.com/carlmjohnson/errutil v0.21.1/go.mod h1:t1n46sLob5fpvrJ5706xDg0zOcj2FigYuhAn37qSRec=
+github.com/carlmjohnson/errutil v0.21.5 h1:4WpeYOqUXCg1LVrc3qp7Tzr0SJgpipupdVIpNmmwd/U=
+github.com/carlmjohnson/errutil v0.21.5/go.mod h1:DMNW3MBHsaV/EPm8pjs4sA/gNjNsG4rUzbAfOh++gSM=
 github.com/carlmjohnson/exitcode v0.20.2 h1:vE6rmkCGNA4kO4m1qwWIa77PKlUBVg46cNjs22eAOXE=
 github.com/carlmjohnson/exitcode v0.20.2/go.mod h1:MZ6ThCDx517DQcrpYnnns1pLh8onjFl+B/AsrOrdmpc=
 github.com/carlmjohnson/flagext v0.21.0 h1:/c4uK3ie786Z7caXLcIMvePNSSiH3bQVGDvmGLMme60=
 github.com/carlmjohnson/flagext v0.21.0/go.mod h1:Eenv0epIUAr4NuedNmkzI8WmBmjIxZC239XcKxYS2ac=
-github.com/carlmjohnson/requests v0.21.9-0.20210628171508-cbdbf914f07b h1:FesKmlax5NqdKiPFILCpZOUxCviBrHbIkdRr95hAZ+k=
-github.com/carlmjohnson/requests v0.21.9-0.20210628171508-cbdbf914f07b/go.mod h1:1i7g2I2eq5ZlNY6V/2wz5d2IVMH0TXyARtZ8P0t0/i4=
 github.com/carlmjohnson/requests v0.21.10 h1:+HiFqt0IXfb0UqWHswJzI17LNGDUOYzfC5egC4tUgsU=
 github.com/carlmjohnson/requests v0.21.10/go.mod h1:1i7g2I2eq5ZlNY6V/2wz5d2IVMH0TXyARtZ8P0t0/i4=
 github.com/carlmjohnson/slackhook v0.21.1 h1:6vm4ES1C0oUKcIpzL0PodyuSPaZrOeUlh8dIdJoAO/c=
