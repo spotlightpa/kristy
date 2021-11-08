@@ -39,5 +39,6 @@ func (cl *Client) Status(ctx context.Context, code int, msg []byte) (err error) 
 
 	return cl.rb.Clone().
 		Pathf("%d", code).
+		BodyBytes(msg).
 		Fetch(ctx)
 }
