@@ -144,7 +144,7 @@ const (
 	maxBuf       = 640 * kb
 	maxSlackBuff = 40 * kb
 	// HC documents their buffer as 10KB
-	// but it appears to actuall be only 10k
+	// but it appears to actually be only 10k
 	maxHCBuff = 10_000
 )
 
